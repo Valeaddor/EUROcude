@@ -1,20 +1,20 @@
 #include <EEManager.h>
 #include <EncButton.h>
 
-#define LOW_LEVEL 2
-#define ON_LEVEL 3
-#define OFF_LEVEL 4
-#define HIGH_LEVEL 5
-#define RELAY_PIN 6
-#define TONE_PIN 7
-#define AUTO_PIN 8
-#define MODE_PIN 9
+#define LOW_LEVEL 2  // пин подключения нижено датчика (критически малого уровня) воды
+#define ON_LEVEL 3   // пин подключения датчика воды малого уровня (требуется включение насоса)
+#define OFF_LEVEL 4  // пин подключения датчика воды достаточного уровня (требуется выключение насоса)
+#define HIGH_LEVEL 5  // пин подключения верхнего датчика (критически высогоко уровня) воды
+#define RELAY_PIN 6 // пин подключения реле насоса
+#define TONE_PIN 7 // пин подключения динамика
+#define AUTO_PIN 8 // пин подключения светодиода атоматического режима работы
+#define MODE_PIN 9 // пин подключения кнопки управления
 
 
 // блок 1 - структура
 struct DataBlock {
-  bool Auto = false;
-  uint32_t run_count = 0;
+  bool Auto = false; // ремиж работы "ручной" = false, "автоматический" = true
+  uint32_t run_count = 0; // количество включений насоса
 };
 
 DataBlock ee_data;
@@ -43,12 +43,11 @@ void setup() {
   pinMode(HIGH_LEVEL, INPUT);
   pinMode(ON_LEVEL, INPUT);
   pinMode(OFF_LEVEL, INPUT);
-//  pinMode(MODE_PIN, INPUT_PULLUP);
+//  pinMode(MODE_PIN, INPUT_PULLUP); // делается в инициализации конструктора кнопки
 
-  Serial.begin(9600);
   
-  // put your setup code here, to run once:
-
+  Serial.begin(9600);  // можно подключить BT модуль для мониторинга
+  
   byte stat = mem.begin(0, 'v');
   if(stat > 1) Mem_Error();
 
